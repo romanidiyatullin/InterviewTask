@@ -1,8 +1,8 @@
 package com.idiyrom;
 
-public class PingPongTask {
+public class PingPongJokeTask {
 
-    static boolean flag = true;
+    static byte marker = 0;
     static Object o = new Object();
 
     public static void main(String[] args)  {
@@ -11,10 +11,10 @@ public class PingPongTask {
             int counter = 0;
             while (counter<10) {
                 synchronized (o) {
-                    if (flag) {
+                    if (marker==0) {
                         System.out.println("Ping!");
                         counter++;
-                        flag = false;
+                        marker=1;
                     }
                 }
             }
@@ -24,10 +24,23 @@ public class PingPongTask {
             int counter = 0;
             while (counter<10) {
                 synchronized (o) {
-                    if (!flag) {
+                    if (marker==1) {
                         System.out.println("Pong!");
                         counter++;
-                        flag = true;
+                        marker = 2;
+                    }
+                }
+            }
+        };
+
+        Runnable r3 = () -> {
+            int counter = 0;
+            while (counter<10) {
+                synchronized (o) {
+                    if (marker==2) {
+                        System.out.println("Joke!");
+                        counter++;
+                        marker = 0;
                     }
                 }
             }
@@ -35,8 +48,10 @@ public class PingPongTask {
 
         Thread t1 = new Thread(r1);
         Thread t2 = new Thread(r2);
+        Thread t3 = new Thread(r3);
         t1.start();
         t2.start();
+        t3.start();
 
     }
 }
