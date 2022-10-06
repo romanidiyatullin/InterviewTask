@@ -5,7 +5,7 @@ public class PingPongTask {
     static boolean flag = true;
     static Object o = new Object();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args)  {
 
         Runnable r1 = () -> {
             int counter = 0;
